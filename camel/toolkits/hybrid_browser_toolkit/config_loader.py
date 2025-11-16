@@ -58,6 +58,7 @@ class ToolkitConfig:
     log_dir: Optional[str] = None
     session_id: Optional[str] = None
     enabled_tools: Optional[list] = None
+    request_timeout: Optional[int] = 60000  # in milliseconds
 
 
 class ConfigLoader:
@@ -115,6 +116,8 @@ class ConfigLoader:
                 browser_kwargs["cdp_keep_current_page"] = value
             elif key == "consoleLogLimit":
                 browser_kwargs["console_log_limit"] = value
+            elif key == "fullVisualMode":
+                browser_kwargs["full_visual_mode"] = value
             elif key == "cacheDir":
                 toolkit_kwargs["cache_dir"] = value
             elif key == "browserLogToFile":
@@ -123,8 +126,8 @@ class ConfigLoader:
                 toolkit_kwargs["session_id"] = value
             elif key == "enabledTools":
                 toolkit_kwargs["enabled_tools"] = value
-            elif key == "fullVisualMode":
-                browser_kwargs["full_visual_mode"] = value
+            elif key == "requestTimeout":
+                toolkit_kwargs["request_timeout"] = value
 
         browser_config = BrowserConfig(**browser_kwargs)
         toolkit_config = ToolkitConfig(**toolkit_kwargs)
@@ -158,6 +161,7 @@ class ConfigLoader:
             "cdpUrl": self.browser_config.cdp_url,
             "cdpKeepCurrentPage": self.browser_config.cdp_keep_current_page,
             "fullVisualMode": self.browser_config.full_visual_mode,
+            "requestTimeout": self.toolkit_config.request_timeout,
         }
 
     def get_timeout_config(self) -> Dict[str, Optional[int]]:
